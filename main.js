@@ -37,9 +37,9 @@ app.get("/articles", (req, res) => {
     res.json(articles)
 })
 
-app.get("/articles/:id", (req, res) => {
+app.get("/articles/search_2", (req, res) => {
     const arr = [];
-    const id = req.params.id;
+    const id = req.query.id;
     console.log(id);
     articles.find((element, index) => {
         if (element.id.toString() === id.toString()) {
@@ -47,18 +47,13 @@ app.get("/articles/:id", (req, res) => {
             arr.push(articles[index])
             res.json(arr);
         }
-        else {
-            res.status(404);
-            res.json("id articals not found");
-        }
     });
 });
 
-app.get("/articles/author/:author", (req, res) => {
+app.get("/articles/search_1", (req, res) => {
     const arr = [];
-    const author = req.params.author;
-    console.log(author);
-
+    const author = req.query.author;
+    console.log("geeeet", author);
     articles.find((element, index) => {
         if (element.author.toString() === author.toString()) {
             res.status(200);

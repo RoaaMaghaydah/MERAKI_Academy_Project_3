@@ -89,6 +89,18 @@ app.put("/articles/:id", (req, res) => {
     });
 });
 
+app.delete("/articles/:id", (req, res) => {
+    const deleteArc = req.params.id;
+    articles.find((elem, index) => {
+        if (elem.id.toString() === deleteArc.toString()) {
+            articles.splice(index, 1)
+        }
+        deleteMassege = { succes:true, massage: `Success Delete article with id => ${deleteArc}` }
+        res.json(deleteMassege)
+    });
+
+});
+
 
 
 app.listen(port, () => {

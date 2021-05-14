@@ -1,4 +1,5 @@
 const express = require("express");
+const {v4 : uuidv4} = require('uuid')
 const app = express();
 const port = 5000;
 
@@ -66,6 +67,12 @@ app.get("/articles/author/:author", (req, res) => {
     res.json(arr);
 })
 
+app.post("/articles", (req, res) => {
+    const addArticles = { id: uuidv4() , title: req.body.title, description: req.body.description, author: req.body.author };
+    articles.push(addArticles);
+    res.status(201);
+    res.json(addArticles);
+})
 
 
 

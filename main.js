@@ -29,10 +29,28 @@ const articles = [
     },
 ];
 
-app.get("/articles",(req,res)=>{
+app.get("/articles", (req, res) => {
     res.status(200);
     res.json(articles)
 })
+
+app.get("/articles/:id", (req, res) => {
+    const arr = [];
+    const id = req.params.id;
+    console.log(id);
+    articles.find((element, index) => {
+        if (element.id.toString() === id.toString()) {
+            res.status(200);
+            arr.push(articles[index])
+            res.json(arr);
+        }
+        else {
+            res.status(404);
+            res.json("id articals not found");
+        }
+    });
+});
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);

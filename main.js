@@ -51,6 +51,23 @@ app.get("/articles/:id", (req, res) => {
     });
 });
 
+app.get("/articles/author/:author", (req, res) => {
+    const arr = [];
+    const author = req.params.author;
+    console.log(author);
+
+
+    articles.find((element, index) => {
+        if (element.author.toString() === author.toString()) {
+            res.status(200);
+            arr.push(articles[index])
+        }
+    });
+    res.json(arr);
+})
+
+
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);

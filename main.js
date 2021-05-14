@@ -1,3 +1,5 @@
+const e = require("express");
+const { query } = require("express");
 const express = require("express");
 const { v4: uuidv4 } = require('uuid')
 const app = express();
@@ -57,7 +59,6 @@ app.get("/articles/author/:author", (req, res) => {
     const author = req.params.author;
     console.log(author);
 
-
     articles.find((element, index) => {
         if (element.author.toString() === author.toString()) {
             res.status(200);
@@ -100,6 +101,20 @@ app.delete("/articles/:id", (req, res) => {
     });
 
 });
+
+app.delete("/articles", (req, res) => {
+     let deleteArc = req.body.author;
+     deleteMassege="not found";
+    articles.find((element, index) => {  
+        if (element.author===deleteArc) {
+            articles.splice(index, 1)
+            deleteMassege ={succes:true, massage: `Success Delete article with id => ${deleteArc}` }
+        }       
+    });
+
+    res.json(deleteMassege)
+});
+
 
 
 

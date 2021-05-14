@@ -1,5 +1,5 @@
 const express = require("express");
-const {v4 : uuidv4} = require('uuid')
+const { v4: uuidv4 } = require('uuid')
 const app = express();
 const port = 5000;
 
@@ -68,12 +68,26 @@ app.get("/articles/author/:author", (req, res) => {
 })
 
 app.post("/articles", (req, res) => {
-    const addArticles = { id: uuidv4() , title: req.body.title, description: req.body.description, author: req.body.author };
+    const addArticles = { id: uuidv4(), title: req.body.title, description: req.body.description, author: req.body.author };
     articles.push(addArticles);
     res.status(201);
     res.json(addArticles);
 })
 
+app.put("/articles/:id", (req, res) => {
+    const updateArc = req.params.id;
+    articles.find((element, index) => {
+        console.log(element.id.toString() === updateArc.toString())
+        if (element.id.toString() === updateArc.toString()) {
+            articles[index].title = req.body.title;
+            articles[index].description = req.body.description;
+            articles[index].author = req.body.author;
+            res.json(articles[index])
+        }      
+    
+
+    });
+});
 
 
 app.listen(port, () => {

@@ -55,7 +55,7 @@ app.get("/articles/search_1", (req, res) => {
     const author = req.query.author;
     console.log("geeeet", author);
     articles.find((element, index) => {
-        if (element.author.toString() === author.toString()) {
+        if (element.author === author) {
             res.status(200);
             arr.push(articles[index])
         }

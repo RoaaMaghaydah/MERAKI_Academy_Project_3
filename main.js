@@ -77,17 +77,18 @@ app.post("/articles", (req, res) => {
 app.put("/articles/:id", (req, res) => {
     const updateArc = req.params.id;
     articles.find((element, index) => {
-        console.log(element.id.toString() === updateArc.toString())
         if (element.id.toString() === updateArc.toString()) {
             articles[index].title = req.body.title;
             articles[index].description = req.body.description;
             articles[index].author = req.body.author;
-            res.json(articles[index])
-        }      
-    
+            res.status(200);
+            res.json(articles[index]);
+        }
+
 
     });
 });
+
 
 
 app.listen(port, () => {

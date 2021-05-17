@@ -162,9 +162,18 @@ authRouter.get("/articles", (req, res) => {
         });
 });
 
-authRouter.get("/articles", (req, res) => {
+authRouter.get("/articles/search_1",async (req, res) => {
+    let articles1;
+    await User.findOne({ firstName: "roaa" })
+        .then((result) => {
+            articles1 = result;
+            console.log(articles1);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 
-    Article.find({})
+    Article.find({ author:articles1._id})
         .then((result) => {
             res.json(result);
         })
@@ -172,6 +181,29 @@ authRouter.get("/articles", (req, res) => {
             res.json(err);
         });
 });
+
+authRouter.get("/articles/search_2",async (req, res) => {
+    let articles1;
+    await User.findOne({ firstName: "roaa" })
+        .then((result) => {
+            articles1 = result;
+            console.log(articles1);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+
+    Article.find({author:articles1._id}).populate("author","firstName").exec()
+        .then((result) => {
+            res.json(result);
+        })
+        .catch((err) => {
+            res.json(err);
+        });
+});
+
+
+
 
 
 

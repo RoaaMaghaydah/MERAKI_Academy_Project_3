@@ -201,7 +201,7 @@ authRouter.put("/articles/:_id", (req, res) => {
     )
         .then((result) => {   
             res.json(result)
-           console.log(result)
+          
         })
         .catch((err) => {
           res.json(err)
@@ -212,8 +212,8 @@ authRouter.put("/articles/:_id", (req, res) => {
 authRouter.delete("/articles/:_id", (req, res) => {
     const query={_id:req.params._id}
     Article.deleteOne(query)
-    .then(result => {  deleteMassege = { succes: true, massage: `Success Delete article with id => ${deleteArc}` }
-    res.json(deleteMassege) }).catch(err => { res.send(err) })
+    .then(result => { 
+    res.send( {succes: true, massage: `Success Delete article with id => ${req.params._id}` }) }).catch(err => { res.send(err) })
 });
 
 authRouter.delete("/articles",async (req, res) => {
@@ -221,18 +221,16 @@ authRouter.delete("/articles",async (req, res) => {
     await User.findOne({ firstName:req.body.firstName})
         .then((result) => {
             articles1 = result;
-            console.log(articles1);
         })
         .catch((err) => {
             console.log(err);
         });
 
     Article.deleteMany({author:articles1._id})
-    .then(result => { 
-    res.json({ succes: true, massage: `Success Delete article with id => ${deleteArc}` }) }).catch(err => { res.send(err) })
+    .then(result => {   
+     res.json({succes: true, massage: `Success Delete article with id => ${articles1.firstName}` }) }).catch(err =>{ res.send(err) })
+    
 });
-
-
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);

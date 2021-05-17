@@ -1,6 +1,8 @@
 const e = require("express");
 const { query } = require("express");
 const express = require("express");
+const db = require("./db");
+const { User, article} = require("./schema");
 const { v4: uuidv4 } = require('uuid')
 const app = express();
 const port = 5000;

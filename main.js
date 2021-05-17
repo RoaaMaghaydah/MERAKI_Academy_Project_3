@@ -206,8 +206,17 @@ authRouter.put("/articles/:_id", (req, res) => {
         .catch((err) => {
           res.json(err)
         });
-    
+  
 });
+
+authRouter.delete("/articles/:_id", (req, res) => {
+    const query={_id:req.params._id}
+    Article.deleteOne(query)
+    .then(result => { res.json("done") }).catch(err => { res.send(err) })
+});
+
+
+
 
 
 

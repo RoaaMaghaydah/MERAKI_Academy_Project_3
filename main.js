@@ -212,17 +212,25 @@ authRouter.put("/articles/:_id", (req, res) => {
 authRouter.delete("/articles/:_id", (req, res) => {
     const query={_id:req.params._id}
     Article.deleteOne(query)
-    .then(result => { res.json("done") }).catch(err => { res.send(err) })
+    .then(result => {  deleteMassege = { succes: true, massage: `Success Delete article with id => ${deleteArc}` }
+    res.json(deleteMassege) }).catch(err => { res.send(err) })
 });
 
+authRouter.delete("/articles",async (req, res) => {
+    let articles1;
+    await User.findOne({ firstName:req.body.firstName})
+        .then((result) => {
+            articles1 = result;
+            console.log(articles1);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 
-
-
-
-
-
-
-
+    Article.deleteMany({author:articles1._id})
+    .then(result => { 
+    res.json({ succes: true, massage: `Success Delete article with id => ${deleteArc}` }) }).catch(err => { res.send(err) })
+});
 
 
 

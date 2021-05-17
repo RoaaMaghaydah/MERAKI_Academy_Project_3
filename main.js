@@ -128,19 +128,19 @@ authRouter.post("/users", (req, res) => {
         });
 })
 
-authRouter.post("/articles", async(req, res) => {
-    const {title,description,author} = req.body;
+authRouter.post("/articles", async (req, res) => {
+    const { title, description, author } = req.body;
     let articles1;
-    await User.findOne({firstName: "roaa" })
-      .then((result) => {
-        articles1 = result;
-        console.log(articles1);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-      const arct1 = new Article({title,description,author:articles1._id})
-      arct1.save()
+    await User.findOne({ firstName: "roaa" })
+        .then((result) => {
+            articles1 = result;
+            console.log(articles1);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    const arct1 = new Article({ title, description, author: articles1._id })
+    arct1.save()
         .then((result) => {
             res.status(201);
             res.json(result);
@@ -150,6 +150,28 @@ authRouter.post("/articles", async(req, res) => {
         });
 })
 
+
+authRouter.get("/articles", (req, res) => {
+
+    Article.find({})
+        .then((result) => {
+            res.json(result);
+        })
+        .catch((err) => {
+            res.json(err);
+        });
+});
+
+authRouter.get("/articles", (req, res) => {
+
+    Article.find({})
+        .then((result) => {
+            res.json(result);
+        })
+        .catch((err) => {
+            res.json(err);
+        });
+});
 
 
 

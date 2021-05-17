@@ -113,6 +113,7 @@ app.delete("/articles", (req, res) => {
 
     res.json(deleteMassege)
 });
+//_____________________________________________//
 
 authRouter.post("/users", (req, res) => {
     const { firstName, lastName, age, country, email, password } = req.body;
@@ -162,9 +163,9 @@ authRouter.get("/articles", (req, res) => {
         });
 });
 
-authRouter.get("/articles/search_1",async (req, res) => {
+authRouter.get("/articles/search_1", async (req, res) => {
     let articles1;
-    await User.findOne({ firstName:req.query.firstName })
+    await User.findOne({ firstName: req.query.firstName })
         .then((result) => {
             articles1 = result;
             console.log(articles1);
@@ -173,7 +174,7 @@ authRouter.get("/articles/search_1",async (req, res) => {
             console.log(err);
         });
 
-    Article.find({ author:articles1._id})
+    Article.find({ author: articles1._id })
         .then((result) => {
             res.json(result);
         })
@@ -182,10 +183,10 @@ authRouter.get("/articles/search_1",async (req, res) => {
         });
 });
 
-authRouter.get("/articles/search_2",async (req, res) => {
-    await Article.findOne({_id:req.query._id}).populate("author","firstName").exec()
+authRouter.get("/articles/search_2", async (req, res) => {
+    await Article.findOne({ _id: req.query._id }).populate("author", "firstName").exec()
         .then((result) => {
-           
+
             res.json(result)
             consol.log(articles1);
         })
@@ -193,32 +194,33 @@ authRouter.get("/articles/search_2",async (req, res) => {
             res.json(err)
         });
 
- 
+
 });
 
 authRouter.put("/articles/:_id", (req, res) => {
-     Article.findOneAndUpdate({_id:req.params._id}, { title, description } = req.body, { new: true }
+    Article.findOneAndUpdate({ _id: req.params._id }, { title, description } = req.body, { new: true }
     )
-        .then((result) => {   
+        .then((result) => {
             res.json(result)
-          
+
         })
         .catch((err) => {
-          res.json(err)
+            res.json(err)
         });
-  
+
 });
 
 authRouter.delete("/articles/:_id", (req, res) => {
-    const query={_id:req.params._id}
+    const query = { _id: req.params._id }
     Article.deleteOne(query)
-    .then(result => { 
-    res.send( {succes: true, massage: `Success Delete article with id => ${req.params._id}` }) }).catch(err => { res.send(err) })
+        .then(result => {
+            res.send({ succes: true, massage: `Success Delete article with id => ${req.params._id}` })
+        }).catch(err => { res.send(err) })
 });
 
-authRouter.delete("/articles",async (req, res) => {
+authRouter.delete("/articles", async (req, res) => {
     let articles1;
-    await User.findOne({ firstName:req.body.firstName})
+    await User.findOne({ firstName: req.body.firstName })
         .then((result) => {
             articles1 = result;
         })
@@ -226,10 +228,11 @@ authRouter.delete("/articles",async (req, res) => {
             console.log(err);
         });
 
-    Article.deleteMany({author:articles1._id})
-    .then(result => {   
-     res.json({succes: true, massage: `Success Delete article with id => ${articles1.firstName}` }) }).catch(err =>{ res.send(err) })
-    
+    Article.deleteMany({ author: articles1._id })
+        .then(result => {
+            res.json({ succes: true, massage: `Success Delete article with id => ${articles1.firstName}` })
+        }).catch(err => { res.send(err) })
+
 });
 
 app.listen(port, () => {

@@ -184,27 +184,22 @@ authRouter.get("/articles/search_1",async (req, res) => {
 
 authRouter.get("/articles/search_2",async (req, res) => {
     let articles1;
-    await User.findOne({ firstName: "roaa" })
+    await Article.find({author:req.query.author}).populate("author","firstName").exec()
         .then((result) => {
             articles1 = result;
+            res.json(result)
             console.log(articles1);
         })
         .catch((err) => {
             console.log(err);
         });
 
-    Article.find({author:articles1._id}).populate("author","firstName").exec()
-        .then((result) => {
-            res.json(result);
-        })
-        .catch((err) => {
-            res.json(err);
-        });
+ 
 });
 
-authRouter.put("/articles",async (req, res) => {
+authRouter.put("/articles/:id",async (req, res) => {
     let articles1;
-    await User.findOne({ firstName: "roaa" })
+    await User.findOne({ author:req.params.author})
         .then((result) => {
             articles1 = result;
             console.log(articles1);

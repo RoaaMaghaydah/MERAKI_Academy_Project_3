@@ -183,35 +183,30 @@ authRouter.get("/articles/search_1",async (req, res) => {
 });
 
 authRouter.get("/articles/search_2",async (req, res) => {
-    let articles1;
-    await Article.find({author:req.query.author}).populate("author","firstName").exec()
+    await Article.findOne({_id:req.query._id}).populate("author","firstName").exec()
         .then((result) => {
-            articles1 = result;
+           
             res.json(result)
-            console.log(articles1);
+            consol.log(articles1);
         })
         .catch((err) => {
-            console.log(err);
+            res.json(err)
         });
 
  
 });
 
-authRouter.put("/articles/:id",async (req, res) => {
-    let articles1;
-    await User.findOne({ author:req.params.author})
-        .then((result) => {
-            articles1 = result;
-            console.log(articles1);
+authRouter.put("/articles/:_id", (req, res) => {
+     Article.findOneAndUpdate({_id:req.params._id}, { title, description } = req.body, { new: true }
+    )
+        .then((result) => {   
+            res.json(result)
+           console.log(result)
         })
         .catch((err) => {
-            console.log(err);
+          res.json(err)
         });
-        let query={author:articles1._id}
-   
-    Article.findOneAndUpdate(query, { title, description, } = req.body, { new: true }
-    )
-        .then(result => { res.json(result) }).catch(err => { res.send(err) })    
+    
 });
 
 

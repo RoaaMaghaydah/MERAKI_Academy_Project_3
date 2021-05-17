@@ -164,7 +164,7 @@ authRouter.get("/articles", (req, res) => {
 
 authRouter.get("/articles/search_1",async (req, res) => {
     let articles1;
-    await User.findOne({ firstName: "roaa" })
+    await User.findOne({ firstName:req.query.firstName })
         .then((result) => {
             articles1 = result;
             console.log(articles1);
@@ -201,6 +201,24 @@ authRouter.get("/articles/search_2",async (req, res) => {
             res.json(err);
         });
 });
+
+authRouter.put("/articles",async (req, res) => {
+    let articles1;
+    await User.findOne({ firstName: "roaa" })
+        .then((result) => {
+            articles1 = result;
+            console.log(articles1);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+        let query={author:articles1._id}
+   
+    Article.findOneAndUpdate(query, { title, description, } = req.body, { new: true }
+    )
+        .then(result => { res.json(result) }).catch(err => { res.send(err) })    
+});
+
 
 
 

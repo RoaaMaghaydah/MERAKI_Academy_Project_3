@@ -2,13 +2,16 @@ const e = require("express");
 const { query } = require("express");
 const express = require("express");
 const db = require("./db");
-const { User, article} = require("./schema");
+const { User, article } = require("./schema");
 const { v4: uuidv4 } = require('uuid')
 const app = express();
 const port = 5000;
 
+
+const authRouter = express.Router();
 app.use(express.json());
 
+app.use("/auth", authRouter);
 
 const articles = [
     {
@@ -93,24 +96,39 @@ app.delete("/articles/:id", (req, res) => {
         if (elem.id.toString() === deleteArc.toString()) {
             articles.splice(index, 1)
         }
-        deleteMassege = { succes:true, massage: `Success Delete article with id => ${deleteArc}` }
+        deleteMassege = { succes: true, massage: `Success Delete article with id => ${deleteArc}` }
         res.json(deleteMassege)
     });
 
 });
 
 app.delete("/articles", (req, res) => {
-     let deleteArc = req.body.author;
-     deleteMassege="not found";
-    articles.find((element, index) => {  
-        if (element.author===deleteArc) {
+    let deleteArc = req.body.author;
+    deleteMassege = "not found";
+    articles.find((element, index) => {
+        if (element.author === deleteArc) {
             articles.splice(index, 1)
-            deleteMassege ={succes:true, massage: `Success Delete article with id => ${deleteArc}` }
-        }       
+            deleteMassege = { succes: true, massage: `Success Delete article with id => ${deleteArc}` }
+        }
     });
 
     res.json(deleteMassege)
 });
+
+authRouter.post("/users", (req, res) => {
+    const { firstName, lastName, age, country, email, password } = req.body;
+    const user1 = new User({ firstName, lastName, age, country, email, password })
+    user1
+        .save()
+        .then((result) => {
+            res.status(201);
+            res.json(result);
+        })
+        .catch((err) => {
+            res.send(err);
+        });
+})
+
 
 
 

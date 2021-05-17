@@ -17,7 +17,7 @@ const articles=new mongoose.Schema({
 })
 
 const User = mongoose.model("User", users);
-const article = mongoose.model("article", articles) ;
+const Article = mongoose.model("Article", articles) ;
 
 module.exports.User = User;
-module.exports.article = article ;
+module.exports.Article = Article ;

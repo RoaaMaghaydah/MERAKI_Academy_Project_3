@@ -2,7 +2,7 @@ const e = require("express");
 const { query } = require("express");
 const express = require("express");
 const db = require("./db");
-const { User, article } = require("./schema");
+const { User, Article } = require("./schema");
 const { v4: uuidv4 } = require('uuid')
 const app = express();
 const port = 5000;
@@ -10,7 +10,6 @@ const port = 5000;
 
 const authRouter = express.Router();
 app.use(express.json());
-
 app.use("/auth", authRouter);
 
 const articles = [
@@ -128,6 +127,29 @@ authRouter.post("/users", (req, res) => {
             res.send(err);
         });
 })
+
+authRouter.post("/articles", async(req, res) => {
+    const {title,description,author} = req.body;
+    let articles1;
+    await User.findOne({firstName: "roaa" })
+      .then((result) => {
+        articles1 = result;
+        console.log(articles1);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+      const arct1 = new Article({title,description,author:articles1._id})
+      arct1.save()
+        .then((result) => {
+            res.status(201);
+            res.json(result);
+        })
+        .catch((err) => {
+            res.send(err);
+        });
+})
+
 
 
 

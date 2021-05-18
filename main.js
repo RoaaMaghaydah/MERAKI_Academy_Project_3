@@ -230,7 +230,12 @@ authRouter.post("/login", async (req, res) => {
 
     await User.findOne({ $and: [{ email: req.body.email }, { password: req.body.password }] })
         .then((result) => {
-            res.json(result)
+            if(result){
+            res.json("valid")
+        }
+        else{
+            res.json("invalid")
+        }
         })
         .catch(() => {
             res.json("invalid")

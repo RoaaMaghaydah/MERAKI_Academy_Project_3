@@ -230,30 +230,30 @@ authRouter.post("/login", async (req, res) => {
 
     await User.findOne({ $and: [{ email: req.body.email }, { password: req.body.password }] })
         .then((result) => {
-            if(result){
-            res.json("valid")
-        }
-        else{
-            res.json("invalid")
-        }
+            if (result) {
+                res.json(" Valid login credentials")
+            }
+            else {
+                res.json("Invalid login credentials")
+            }
         })
-        .catch(() => {
-            res.json("invalid")
+        .catch((err) => {
+            res.json(err)
         });
 })
 
 authRouter.post("/articles/:_id/comments", async (req, res) => {
     const { comment, commenter } = req.body;
     let articles1;
-    console.log()
-    await Article.findOne({ _id: req.params._id })
+    console.log(req.params._id)
+    await Article.findOne({_id: req.params._id })
         .then((result) => {
             articles1 = result;
         })
         .catch((err) => {
             console.log(err);
         });
-    const comment1 = new Comment({ comment, commenter })
+    const comment1 = new Comment({ comment, commenter:articles1.author })
     comment1.save()
         .then((result) => {
             res.status(201);

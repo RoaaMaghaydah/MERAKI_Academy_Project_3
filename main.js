@@ -130,17 +130,8 @@ authRouter.post("/users", (req, res) => {
 })
 
 authRouter.post("/articles", async (req, res) => {
-    const { title, description, author } = req.body;
-    let articles1;
-    await User.findOne({ firstName: "roaa" })
-        .then((result) => {
-            articles1 = result;
-            console.log(articles1);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-    const arct1 = new Article({ title, description, author: articles1._id })
+    const { title, description, author } = req.body;    
+    const arct1 = new Article({ title, description, author})
     arct1.save()
         .then((result) => {
             res.status(201);

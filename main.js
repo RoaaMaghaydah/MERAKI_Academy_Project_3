@@ -130,8 +130,8 @@ authRouter.post("/users", (req, res) => {
 })
 
 authRouter.post("/articles", async (req, res) => {
-    const { title, description, author } = req.body;    
-    const arct1 = new Article({ title, description, author})
+    const { title, description, author } = req.body;
+    const arct1 = new Article({ title, description, author })
     arct1.save()
         .then((result) => {
             res.status(201);
@@ -179,7 +179,7 @@ authRouter.get("/articles/search_2", async (req, res) => {
         .then((result) => {
 
             res.json(result)
-            consol.log(articles1);
+           
         })
         .catch((err) => {
             res.json(err)
@@ -225,6 +225,22 @@ authRouter.delete("/articles", async (req, res) => {
         }).catch(err => { res.send(err) })
 
 });
+
+authRouter.post("/login", async(req, res) => {
+
+  await User.findOne({ $and:[{ email: req.body.email },{ password: req.body.password }] })
+        .then((result) => {
+            res.json(result)
+        })
+        .catch(() => {
+            res.json("invalid")
+        });
+})
+
+
+
+
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);

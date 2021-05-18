@@ -2,7 +2,7 @@ const e = require("express");
 const { query } = require("express");
 const express = require("express");
 const db = require("./db");
-const { User, Article } = require("./schema");
+const { User, Article, Comment } = require("./schema");
 const { v4: uuidv4 } = require('uuid')
 const app = express();
 const port = 5000;
@@ -179,7 +179,7 @@ authRouter.get("/articles/search_2", async (req, res) => {
         .then((result) => {
 
             res.json(result)
-           
+
         })
         .catch((err) => {
             res.json(err)
@@ -226,9 +226,9 @@ authRouter.delete("/articles", async (req, res) => {
 
 });
 
-authRouter.post("/login", async(req, res) => {
+authRouter.post("/login", async (req, res) => {
 
-  await User.findOne({ $and:[{ email: req.body.email },{ password: req.body.password }] })
+    await User.findOne({ $and: [{ email: req.body.email }, { password: req.body.password }] })
         .then((result) => {
             res.json(result)
         })
@@ -237,7 +237,27 @@ authRouter.post("/login", async(req, res) => {
         });
 })
 
-
+authRouter.post("/articles/:_id/comments", async (req, res) => {
+    const { comment, commenter } = req.body;
+    let articles1;
+    console.log()
+    await Article.findOne({ _id: req.params._id })
+        .then((result) => {
+            articles1 = result;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    const comment1 = new Comment({ comment, commenter })
+    comment1.save()
+        .then((result) => {
+            res.status(201);
+            res.json(result);
+        })
+        .catch((err) => {
+            res.send(err);
+        });
+})
 
 
 

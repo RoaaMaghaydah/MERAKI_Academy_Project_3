@@ -5,7 +5,7 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("./db");
-const { User, Article, Comment } = require("./schema");
+const { User, Article, Comment,Role} = require("./schema");
 const { v4: uuidv4 } = require('uuid')
 const app = express();
 const port = 5000;

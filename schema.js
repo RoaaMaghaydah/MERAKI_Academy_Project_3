@@ -23,6 +23,11 @@ const comments = new mongoose.Schema({
     commenter: { type: mongoose.Schema.Types.ObjectId }
 })
 
+const roles= new mongoose.Schema({
+    role: { type: String },
+    permissions:[String]
+})
+
   users.pre("save", async function () {
     this.email = this.email.toLowerCase();
     const salt=5;
@@ -35,7 +40,9 @@ const comments = new mongoose.Schema({
 const User = mongoose.model("User", users);
 const Article = mongoose.model("Article", articles);
 const Comment = mongoose.model("Comment", comments)
+const Role = mongoose.model("Role", roles)
 
 module.exports.User = User;
 module.exports.Article = Article;
 module.exports.Comment = Comment;
+module.exports.Role = Role;

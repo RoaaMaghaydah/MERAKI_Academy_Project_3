@@ -140,8 +140,8 @@ const authentication = (req, res, next) => {
 
 
 authRouter.post("/users", (req, res) => {
-    const { firstName, lastName, age, country, email, password } = req.body;
-    const user1 = new User({ firstName, lastName, age, country, email, password })
+    const { firstName, lastName, age, country, email, password,role } = req.body;
+    const user1 = new User({ firstName, lastName, age, country, email, password,role})
     user1
         .save()
         .then((result) => {
@@ -165,6 +165,20 @@ authRouter.post("/articles", async (req, res) => {
             res.send(err);
         });
 })
+
+authRouter.post("/roles", async (req, res) => {
+    const { role,permissions } = req.body;
+    const role1 = new Role({ role,permissions } )
+    role1.save()
+        .then((result) => {
+            res.status(201);
+            res.json(result);
+        })
+        .catch((err) => {
+            res.send(err);
+        });
+})
+
 
 authRouter.get("/articles", (req, res) => {
 
@@ -259,6 +273,7 @@ authRouter.post("/login", async (req, res) => {
                         const payload = {
                             userId: result._id,
                             country: result.country,
+                           role:result.role
                         };
                         console.log(payload);
                         const options = { expiresIn: '60m' };

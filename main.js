@@ -119,6 +119,24 @@ app.delete("/articles", (req, res) => {
 });
 //_____________________________________________//
 
+const authentication = (req, res, next) => {
+
+    const token = req.headers.authorization.split(" ")[1];
+    console.log(token)
+    jwt.verify(token, secret, (err, result) => {
+        console.log(result)
+        if (err) {
+            return res.json(err);
+        }
+        if (userId==="60a4dfc81cfe410644ef3211") {
+            next();
+        } else {
+            res.json({ message: "The Token is invalid or expired", status: 403 })
+        }
+    });
+}
+
+
 authRouter.post("/users", (req, res) => {
     const { firstName, lastName, age, country, email, password } = req.body;
     const user1 = new User({ firstName, lastName, age, country, email, password })
@@ -145,7 +163,6 @@ authRouter.post("/articles", async (req, res) => {
             res.send(err);
         });
 })
-
 
 authRouter.get("/articles", (req, res) => {
 
@@ -260,7 +277,7 @@ authRouter.post("/login", async (req, res) => {
         });
 })
 
-authRouter.post("/articles/:_id/comments", async (req, res) => {
+authRouter.post("/articles/:_id/comments", authentication, async (req, res) => {
     const { comment, commenter } = req.body;
     let articles1;
     console.log(req.params._id)

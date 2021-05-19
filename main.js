@@ -9,6 +9,7 @@ const { User, Article, Comment } = require("./schema");
 const { v4: uuidv4 } = require('uuid')
 const app = express();
 const port = 5000;
+const secret = process.env.SECRET;
 
 
 const authRouter = express.Router();
@@ -230,14 +231,28 @@ authRouter.delete("/articles", async (req, res) => {
 });
 
 authRouter.post("/login", async (req, res) => {
-
-    await User.findOne({ $and: [{ email: req.body.email }, { password: req.body.password }] })
+    await User.findOne({ email: req.body.email })
         .then((result) => {
             if (result) {
-                res.json(" Valid login credentials")
+                bcrypt.compare(req.body.password, result.password, (err, result1) => {
+
+                    if (result1) {
+                        const payload = {
+                            userId: result._id,
+                            country: result.country,
+                        };
+                        const options = { expiresIn: '60m' };
+                        const token = jwt.sign(payload, secret, options);
+
+                        res.json(token);
+                    }
+                    else {
+                        res.json({ message: "The password you’ve entered is incorrect", status: 403 })
+                    }
+                });
             }
             else {
-                res.json("Invalid login credentials")
+                res.json({ message: "The email doesn't exist", status: 404 })
             }
         })
         .catch((err) => {
@@ -249,14 +264,14 @@ authRouter.post("/articles/:_id/comments", async (req, res) => {
     const { comment, commenter } = req.body;
     let articles1;
     console.log(req.params._id)
-    await Article.findOne({_id: req.params._id })
+    await Article.findOne({ _id: req.params._id })
         .then((result) => {
             articles1 = result;
         })
         .catch((err) => {
             console.log(err);
         });
-    const comment1 = new Comment({ comment, commenter:articles1.author})
+    const comment1 = new Comment({ comment, commenter: articles1.author })
     comment1.save()
         .then((result) => {
             res.status(201);

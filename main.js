@@ -124,14 +124,16 @@ const authentication = (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
     console.log(token)
     jwt.verify(token, secret, (err, result) => {
-        console.log(result)
         if (err) {
             return res.json(err);
         }
-        if (userId==="60a4dfc81cfe410644ef3211") {
+        console.log(result.userId==="60a4dfc81cfe410644ef3211")
+        if (result.userId==="60a4dfc81cfe410644ef3211") {
+            console.log("true")
             next();
         } else {
-            res.json({ message: "The Token is invalid or expired", status: 403 })
+            console.log("false")
+            res.send({ message: "The Token is invalid or expired", status: 403 })
         }
     });
 }
@@ -258,6 +260,7 @@ authRouter.post("/login", async (req, res) => {
                             userId: result._id,
                             country: result.country,
                         };
+                        console.log(payload);
                         const options = { expiresIn: '60m' };
                         const token = jwt.sign(payload, secret, options);
 

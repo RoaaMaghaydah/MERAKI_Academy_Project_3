@@ -1,6 +1,9 @@
 const e = require("express");
 const { query } = require("express");
 const express = require("express");
+require("dotenv").config();
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const db = require("./db");
 const { User, Article, Comment } = require("./schema");
 const { v4: uuidv4 } = require('uuid')
@@ -253,7 +256,7 @@ authRouter.post("/articles/:_id/comments", async (req, res) => {
         .catch((err) => {
             console.log(err);
         });
-    const comment1 = new Comment({ comment, commenter:articles1.author })
+    const comment1 = new Comment({ comment, commenter:articles1.author})
     comment1.save()
         .then((result) => {
             res.status(201);

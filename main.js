@@ -5,7 +5,7 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("./db");
-const { User, Article, Comment,Role} = require("./schema");
+const { User, Article, Comment, Role } = require("./schema");
 const { v4: uuidv4 } = require('uuid')
 const app = express();
 const port = 5000;
@@ -120,19 +120,23 @@ app.delete("/articles", (req, res) => {
 //_____________________________________________//
 
 const authentication = (req, res, next) => {
+    let token;
+    if (req.headers.authorization) {
+        token = req.headers.authorization.split(" ")[1];
+    }
+    else {
+        return res.json("no taken")
+    }
 
-    const token = req.headers.authorization.split(" ")[1];
-    console.log(token)
     jwt.verify(token, secret, (err, result) => {
         if (err) {
             return res.json(err);
         }
-        console.log(result.userId==="60a4dfc81cfe410644ef3211")
-        if (result.userId==="60a4dfc81cfe410644ef3211") {
-            console.log("true")
+        if (result) {
+            req.token = result;
             next();
         } else {
-            console.log("false")
+            res.status(403)
             res.send({ message: "The Token is invalid or expired", status: 403 })
         }
     });
@@ -140,8 +144,8 @@ const authentication = (req, res, next) => {
 
 
 authRouter.post("/users", (req, res) => {
-    const { firstName, lastName, age, country, email, password,role } = req.body;
-    const user1 = new User({ firstName, lastName, age, country, email, password,role})
+    const { firstName, lastName, age, country, email, password, role } = req.body;
+    const user1 = new User({ firstName, lastName, age, country, email, password, role })
     user1
         .save()
         .then((result) => {
@@ -167,8 +171,8 @@ authRouter.post("/articles", async (req, res) => {
 })
 
 authRouter.post("/roles", async (req, res) => {
-    const { role,permissions } = req.body;
-    const role1 = new Role({ role,permissions } )
+    const { role, permissions } = req.body;
+    const role1 = new Role({ role, permissions })
     role1.save()
         .then((result) => {
             res.status(201);
@@ -267,13 +271,23 @@ authRouter.post("/login", async (req, res) => {
     await User.findOne({ email: req.body.email })
         .then((result) => {
             if (result) {
-                bcrypt.compare(req.body.password, result.password, (err, result1) => {
+                bcrypt.compare(req.body.password, result.password, async (err, result1) => {
+                    let articles1;
+                    await Role.findOne({ _id: result.role })
+                        .then((result) => {
+                            articles1 = result;
+                            console.log(articles1);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+
 
                     if (result1) {
                         const payload = {
                             userId: result._id,
                             country: result.country,
-                           role:result.role
+                            role: { role: articles1.role, permissions: articles1.permissions }
                         };
                         console.log(payload);
                         const options = { expiresIn: '60m' };
@@ -282,11 +296,13 @@ authRouter.post("/login", async (req, res) => {
                         res.json(token);
                     }
                     else {
+                        res.status(403)
                         res.json({ message: "The password you’ve entered is incorrect", status: 403 })
                     }
                 });
             }
             else {
+                res.status(404)
                 res.json({ message: "The email doesn't exist", status: 404 })
             }
         })
@@ -298,7 +314,6 @@ authRouter.post("/login", async (req, res) => {
 authRouter.post("/articles/:_id/comments", authentication, async (req, res) => {
     const { comment, commenter } = req.body;
     let articles1;
-    console.log(req.params._id)
     await Article.findOne({ _id: req.params._id })
         .then((result) => {
             articles1 = result;
@@ -316,8 +331,6 @@ authRouter.post("/articles/:_id/comments", authentication, async (req, res) => {
             res.send(err);
         });
 })
-
-
 
 
 app.listen(port, () => {

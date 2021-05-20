@@ -21,7 +21,7 @@ const articles = new mongoose.Schema({
 
 const comments = new mongoose.Schema({
     comment: { type: String },
-    commenter: { type: mongoose.Schema.Types.ObjectId }
+    commenter: { type: mongoose.Schema.Types.ObjectId,ref: "User"}
 })
 
 const roles= new mongoose.Schema({

@@ -125,7 +125,7 @@ const authentication = (req, res, next) => {
         token = req.headers.authorization.split(" ")[1];
     }
     else {
-        return res.json("no taken")
+        res.send({ message: "no taken", status: 403 })
     }
 
     jwt.verify(token, secret, (err, result) => {
@@ -134,6 +134,7 @@ const authentication = (req, res, next) => {
         }
         if (result) {
             req.token = result;
+            // console.log(req.token.role.permissions[0][2]);
             next();
         } else {
             res.status(403)
@@ -142,7 +143,21 @@ const authentication = (req, res, next) => {
     });
 }
 
+const authorization = (req, res, next) => {
+    let str ='n';
+    const token = req.headers.authorization.split(" ")[1];
+    console.log(token)
+    jwt.verify(token, secret, (err, result) => {
+        req.token = result;
+    })
+    if (req.token.role.permissions[0].split("").indexOf(str)!==-1) {
+        next();
+      }
+    else {
+        res.json("error")
+    }
 
+}
 authRouter.post("/users", (req, res) => {
     const { firstName, lastName, age, country, email, password, role } = req.body;
     const user1 = new User({ firstName, lastName, age, country, email, password, role })
@@ -311,7 +326,7 @@ authRouter.post("/login", async (req, res) => {
         });
 })
 
-authRouter.post("/articles/:_id/comments", authentication, async (req, res) => {
+authRouter.post("/articles/:_id/comments", authentication, authorization, async (req, res) => {
     const { comment, commenter } = req.body;
     let articles1;
     await Article.findOne({ _id: req.params._id })

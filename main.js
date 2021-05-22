@@ -144,17 +144,18 @@ const authentication = (req, res, next) => {
 }
 
 const authorization = (req, res, next) => {
-    let str ='n';
+    let str ='add comment1';
     const token = req.headers.authorization.split(" ")[1];
     console.log(token)
     jwt.verify(token, secret, (err, result) => {
         req.token = result;
+        console.log(req.token.role.permissions[0]);
     })
-    if (req.token.role.permissions[0].split("").indexOf(str)!==-1) {
+    if (req.token.role.permissions.indexOf(str)!==-1) {
         next();
       }
     else {
-        res.json("error")
+        res.json({ message: "forbidden", status: 403 })
     }
 
 }
@@ -173,8 +174,8 @@ authRouter.post("/users", (req, res) => {
 })
 
 authRouter.post("/articles", async (req, res) => {
-    const { title, description, author } = req.body;
-    const arct1 = new Article({ title, description, author })
+    const { title, description, author,comments } = req.body;
+    const arct1 = new Article({ title, description, author,comments})
     arct1.save()
         .then((result) => {
             res.status(201);

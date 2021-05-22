@@ -134,7 +134,6 @@ const authentication = (req, res, next) => {
         }
         if (result) {
             req.token = result;
-            // console.log(req.token.role.permissions[0][2]);
             next();
         } else {
             res.status(403)
@@ -143,21 +142,20 @@ const authentication = (req, res, next) => {
     });
 }
 
-const authorization = (req, res, next) => {
-    let str ='add comment1';
-    const token = req.headers.authorization.split(" ")[1];
-    console.log(token)
-    jwt.verify(token, secret, (err, result) => {
-        req.token = result;
-        console.log(req.token.role.permissions[0]);
-    })
-    if (req.token.role.permissions.indexOf(str)!==-1) {
-        next();
-      }
-    else {
-        res.json({ message: "forbidden", status: 403 })
-    }
+const authorization = (str) => {
 
+    return function (req, res, next) {
+        const token = req.headers.authorization.split(" ")[1];
+        jwt.verify(token, secret, (err, result) => {
+            req.token = result;
+        })
+        if (req.token.role.permissions.indexOf(str) !== -1) {
+            next();
+        }
+        else {
+            res.json({ message: "forbidden", status: 403 })
+             }
+    }
 }
 authRouter.post("/users", (req, res) => {
     const { firstName, lastName, age, country, email, password, role } = req.body;
@@ -174,8 +172,8 @@ authRouter.post("/users", (req, res) => {
 })
 
 authRouter.post("/articles", async (req, res) => {
-    const { title, description, author,comments } = req.body;
-    const arct1 = new Article({ title, description, author,comments})
+    const { title, description, author, comments } = req.body;
+    const arct1 = new Article({ title, description, author, comments })
     arct1.save()
         .then((result) => {
             res.status(201);
@@ -327,7 +325,7 @@ authRouter.post("/login", async (req, res) => {
         });
 })
 
-authRouter.post("/articles/:_id/comments", authentication, authorization, async (req, res) => {
+authRouter.post("/articles/:_id/comments", [authentication, authorization('addcomment')], async (req, res) => {
     const { comment, commenter } = req.body;
     let articles1;
     await Article.findOne({ _id: req.params._id })

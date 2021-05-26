@@ -5,13 +5,34 @@
 
 }
 .RegisterInput{
-    margin-top: 5px;
+    margin: 5px;
     width: 300px;
     height: 20px;
 }
 
 .RegisterButton{
+    margin: 5px;
     width: 300px;
     height: 30px;
     background-color: rgb(241, 94, 119);
 }
+
+.Login{
+    display: grid;
+    gap:10px;
+    border: 3px solid pink;
+}
+
+.LoginInput{
+    margin:10px;
+    width: 300px;
+    height: 20px;
+
+}
+
+.LoginButton{
+    margin:10px;
+        width: 300px;
+        height: 30px;
+        background-color: rgb(241, 94, 119);
+    }  

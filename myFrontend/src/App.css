@@ -1,0 +1,16 @@
+.Register{
+ display: grid;
+ gap:10px;
+ border: 3px solid pink;
+
+}
+.RegisterInput{
+    width: 300px;
+    height: 20px;
+}
+
+.RegisterButton{
+    width: 300px;
+    height: 30px;
+    background-color: rgb(241, 94, 119);
+}

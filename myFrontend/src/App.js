@@ -7,7 +7,7 @@ import Login from './components/Login';
 
 export default function App() {
   return (
-    <div>
+    <div className="App"> 
       <p>App</p>
       <Navigation />
       <Route exact path="/register" component={Register} />
@@ -20,7 +20,7 @@ export default function App() {
 
 const Navigation = () => {
   return (
-    <div style={{ display: 'flex', gap: '16px' }}>
+    <div className="Navigation" style={{ display: 'flex', gap: '16px' }}>
       <Link to="/login">Login</Link>
       <Link to="/register">Register</Link>
     </div>

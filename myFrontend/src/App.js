@@ -12,8 +12,7 @@ export default function App() {
       <Navigation />
       <Route exact path="/register" component={Register} />
       <Route exact path="/login" component={Login} />
-      {/* <Route exact path="/about" component={About} />*/}
-     
+
     </div>
   );
 }
@@ -23,7 +22,7 @@ const Navigation = () => {
   return (
     <div style={{ display: 'flex', gap: '16px' }}>
       <Link to="/login">Login</Link>
-      <Link to="/register">Register</Link>  
+      <Link to="/register">Register</Link>
     </div>
   );
 };

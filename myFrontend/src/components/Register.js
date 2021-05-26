@@ -9,16 +9,20 @@ export default function Register(props) {
     const [age, setAge] = useState(0);
     const [country, setCountry] = useState("");
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");   
-    let a;
+    const [password, setPassword] = useState(""); 
+    const [statas, setStatas] = useState(false); 
+
+
     const cheakRegiste = () => {
+        
         const newUser={ firstName:firstName, lastName:lastName, age:age, country:country, email:email, password:password};
         axios.post(`http://localhost:5000/users`,newUser)
             .then((response) => {
-              a=true;
+             setStatas(true)
+             
             })
             .catch((err)=>{
-                a=false;
+             setStatas(false)
                console.log("error")
            })
         }
@@ -46,6 +50,7 @@ export default function Register(props) {
             }} />
 
             <button className="RegisterButton" onClick={cheakRegiste}>Register</button>
+            {statas ? <div class="trueRegiste">The user has been created successfully</div> :<div class="falseRegiste">Error happened while register, please try again</div>}
             
             <p style={{ cursor: 'pointer' }} onClick={() => { history.push('/'); }}> Home </p>
         </div>

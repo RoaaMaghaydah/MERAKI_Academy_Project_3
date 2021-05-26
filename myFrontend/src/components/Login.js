@@ -4,7 +4,8 @@ import axios from 'axios';
 
 
 export default function Login(props) {
-
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     return (
         <>
             <div className="Login">

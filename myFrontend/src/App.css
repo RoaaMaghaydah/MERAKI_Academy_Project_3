@@ -36,3 +36,20 @@
         height: 30px;
         background-color: rgb(241, 94, 119);
     }  
+
+    .trueRegiste{
+        border: 2px solid green;
+        margin:8px;
+        width: 300px;
+        height:40px;
+        background-color: rgb(130, 240, 126);
+        
+    }
+
+    .falseRegiste{
+        border: 3px solid red;
+        margin:8px;
+        width: 300px;
+        height:40px;
+        background-color: rgb(240, 139, 126);
+    }

@@ -80,3 +80,24 @@
         gap:10px;
         border: 3px solid pink;
     }
+
+    .newArticleInput{
+        margin: 5px;
+        width: 300px;
+        height: 30px;
+    }
+    
+    .newArticleInput_1{
+        margin: 5px;
+        width: 300px;
+        height: 100px;
+    }
+
+    .newArticleButton{
+        margin:5px;
+        width: 300px;
+        height: 30px;
+        background-color: rgb(241, 94, 119);
+    
+    }
+    

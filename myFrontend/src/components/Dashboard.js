@@ -9,7 +9,7 @@ export default function Deshboard(props) {
             <div>
                 <div className="Navigation" style={{ display: 'flex', gap: '16px' }}>
                     <Link to="/deshboard">Dashboard</Link>
-                    <Link to="/register">Register</Link>
+                    <Link to="/newArticle">New Article</Link>
                 </div>
                 <div className="Deshboard">
                     <h4 style={{ margin:"10px" }}>Deshboard</h4>

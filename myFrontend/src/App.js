@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
-import login from './components/Login';
+import Login from './components/Login';
+import NewArticle from './components/NewArticle';
 import { Switch, Route, Link, useParams, useHistory } from 'react-router-dom';
 import './App.css';
-import Login from './components/Login';
 
 export default function App() {
   const [logIN, setLogin] = useState(false);
@@ -15,6 +15,7 @@ export default function App() {
       <Route exact path="/register" component={Register} />
       <Route exact path="/login" render={() => <Login func={setLogin} />} />
       <Route exact path="/deshboard" component={Dashboard} />
+      <Route exact path="/newArticle" component={NewArticle} />
     </div>
   );
 }

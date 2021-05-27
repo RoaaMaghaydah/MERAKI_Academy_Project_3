@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useHistory, Redirect, Link } from 'react-router-dom';
 import axios from 'axios';
 
-export default function Login({setToken}) {
+export default function Login(props) {
+    console.log("settoken",props.func)
     const history = useHistory();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -12,7 +13,8 @@ export default function Login({setToken}) {
         console.log(login);
         axios.post(`http://localhost:5000/login`, login)
             .then((response) => {
-                setToken =response.data.token;
+               //setToken(response.data.token);
+               props.func(response.data.token)
                 history.push("/deshboard")
             })
             .catch((err) => {

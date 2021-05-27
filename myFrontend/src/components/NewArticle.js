@@ -4,13 +4,17 @@ import axios from 'axios';
 
 
 export default function NewArticle(props) {
+    console.log("new art:", props.token1)
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [statas, setStatas] = useState(false);
     const [statas1, setStatas1] = useState(false);
     const newArticles = () => {
         const newArt = { title, description };
-        axios.post(`http://localhost:5000/articles`, newArt)
+        axios.post(`http://localhost:5000/articles`, newArt, {
+            headers: { 'Authorization': props.token1 }
+        }
+        )
             .then((response) => {
                 if (response.data._id) {
                     console.log()
@@ -25,6 +29,8 @@ export default function NewArticle(props) {
 
             })
             .catch((err) => {
+                setStatas1(true)
+                setStatas(false)
                 console.log("error")
             })
 

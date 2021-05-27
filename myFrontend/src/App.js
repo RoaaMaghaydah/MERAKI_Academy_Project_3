@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Register from './components/Register';
+import Dashboard from './components/Dashboard';
 import login from './components/Login';
 import { Switch, Route, Link, useParams, useHistory } from 'react-router-dom';
 import './App.css';
 import Login from './components/Login';
 
 export default function App() {
+  const [logIN, setLogin] = useState(false);
+  const loginStast=()=> {
+    return setLogin();
+  }
+ 
   return (
-    <div className="App"> 
+    <div className="App">
       <p>App</p>
-      <Navigation />
+      {<Navigation />}
+      {/* <Route exact path="/register" component={Navigation} />
+      <Route exact path="/login" component={Navigation} />*/}
       <Route exact path="/register" component={Register} />
-      <Route exact path="/login" component={Login} />
-
+      <Route exact path="/login"  render={() => <Login  func={loginStast}/>}/>
+      <Route exact path="/deshboard" component={Dashboard} />
     </div>
   );
 }

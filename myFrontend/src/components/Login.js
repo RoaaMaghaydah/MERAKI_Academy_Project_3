@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useHistory,Redirect,Link} from 'react-router-dom';
+import { useHistory, Redirect, Link } from 'react-router-dom';
 import axios from 'axios';
 
-export default function Login(props) {
+export default function Login({setToken}) {
     const history = useHistory();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -12,10 +12,8 @@ export default function Login(props) {
         console.log(login);
         axios.post(`http://localhost:5000/login`, login)
             .then((response) => {
-            console.log(response.data.token);
-            //<Redirect to="/register" />
-         props.setLogin=(response.data.token);
-           history.push("/deshboard")                        
+                setToken =response.data.token;
+                history.push("/deshboard")
             })
             .catch((err) => {
                 console.log(err)
@@ -23,9 +21,8 @@ export default function Login(props) {
             })
     }
     return (
-       
-         <>
-        {<Navigation />}
+
+        <>
             <div className="Login">
                 <input className="LoginInput" type="text" placeholder="Enter the email" onChange={(e) => {
                     setEmail(e.target.value);
@@ -40,12 +37,3 @@ export default function Login(props) {
     );
 }
 
-const Navigation = () => {
-    return (
-      <div className="Navigation" style={{ display: 'flex', gap: '16px' }}>
-        <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
-      </div>
-    );
-  };
-  

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory,Redirect } from 'react-router-dom';
+import { useHistory,Redirect,Link} from 'react-router-dom';
 import axios from 'axios';
 
 export default function Login(props) {
@@ -14,6 +14,7 @@ export default function Login(props) {
             .then((response) => {
             console.log(response.data.token);
             //<Redirect to="/register" />
+         props.setLogin=(response.data.token);
            history.push("/deshboard")                        
             })
             .catch((err) => {
@@ -22,7 +23,9 @@ export default function Login(props) {
             })
     }
     return (
-        <>
+       
+         <>
+        {<Navigation />}
             <div className="Login">
                 <input className="LoginInput" type="text" placeholder="Enter the email" onChange={(e) => {
                     setEmail(e.target.value);
@@ -36,3 +39,13 @@ export default function Login(props) {
         </>
     );
 }
+
+const Navigation = () => {
+    return (
+      <div className="Navigation" style={{ display: 'flex', gap: '16px' }}>
+        <Link to="/login">Login</Link>
+        <Link to="/register">Register</Link>
+      </div>
+    );
+  };
+  

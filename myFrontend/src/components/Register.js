@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory,Link } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Register(props) {
@@ -35,7 +35,10 @@ export default function Register(props) {
     
 
     return (
+        <>
+        {<Navigation />}
         <div className="Register">
+           
             <p>Register :</p>
             <input className="RegisterInput" type="text" placeholder="firstName" onChange={(e) => {
                 setFirstName(e.target.value);
@@ -61,6 +64,16 @@ export default function Register(props) {
             {statas1?<div class="falseRegiste">Error happened while register, please try again</div> :""}
                 
             <p style={{ cursor: 'pointer' }} onClick={() => { history.push('/'); }}> Home </p>
-        </div>
+        </div></>
     );
 }
+
+const Navigation = () => {
+    return (
+      <div className="Navigation" style={{ display: 'flex', gap: '16px' }}>
+        <Link to="/login">Login</Link>
+        <Link to="/register">Register</Link>
+      </div>
+    );
+  };
+  
